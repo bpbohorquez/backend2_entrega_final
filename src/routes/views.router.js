@@ -5,6 +5,7 @@ import { readFileSync, writeFileSync } from "fs";
 import productModel from "../models/producto.model.js";
 import mongoose from "mongoose";
 import cartModel from "../models/carrito.model.js";
+import userModel from "../models/user.model.js";
 
 router.get("/", async (req, res) => {
   res.render("home");
@@ -51,6 +52,23 @@ router.get("/productsview/:pid", async (req, res) => {
   let product = await productModel.findOne({ _id: paramId }).lean();
 
   res.render("singleproductview", { product });
+});
+
+router.get("/profile", (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  const { first_name, last_name, email, age, password, cart, role } =
+    req.session.user;
+  res.render("profile", {
+    first_name,
+    last_name,
+    email,
+    age,
+    cart,
+    role,
+  });
 });
 
 export default router;
