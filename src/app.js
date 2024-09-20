@@ -27,7 +27,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl:
         "mongodb+srv://bohorquezbrian:coderhousecluster@coderhouse.to5l7.mongodb.net/base?retryWrites=true&w=majority&appName=Coderhouse",
-      ttl: 15,
+      ttl: 1000,
     }),
     secret: "secretCoder",
     resave: false,

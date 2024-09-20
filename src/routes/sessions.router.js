@@ -4,6 +4,7 @@ const router = Router();
 import mongoose from "mongoose";
 import session from "express-session";
 import userModel from "../models/user.model.js";
+import { createHash } from "../utils.js";
 
 router.get("/session", (req, res) => {
   if (req.session.counter) {
@@ -32,19 +33,33 @@ router.post("/sessions/register", async (req, res) => {
     const { first_name, last_name, email, age, password, cart, role } =
       req.body;
 
-    const user = new userModel({
+    const user = await userModel.create({
       first_name,
       last_name,
       email,
       age,
-      password,
+      password: createHash(password),
       cart,
       role,
     });
-    await user.save();
+    // await user.save();
 
-    res.redirect("/login");
+    // let result = await productModel.create({
+    //   title,
+    //   description,
+    //   code,
+    //   price,
+    //   status,
+    //   stock,
+    //   category,
+    //   thumbnails,
+    // });
+
+    res.send({ status: "success", payload: user });
+
+    // res.redirect("/login");
   } catch (error) {
+    console.log(error);
     res.status(500).send("Error de registro");
   }
 });
