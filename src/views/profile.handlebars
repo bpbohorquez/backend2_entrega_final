@@ -1,6 +1,10 @@
 <h1>Perfil del usuario</h1>
-<p>Nombre: {{first_name}}{{last_name}}</p>
-<p>Email: {{email}}</p>
-<p>Edad: {{age}}</p>
-<p>Cart: {{cart}}</p>
-<p>Role: {{role}}</p>
+<p>Nombre: {{user.first_name}}{{user.last_name}}</p>
+<p>Email: {{user.email}}</p>
+<p>Edad: {{user.age}}</p>
+<p>Cart: {{user.cart}}</p>
+<p>Role: {{user.role}}</p>
+
+<form action="/sessions/logout" method="POST"></form>
+    <button type="submit">Cerrar Sesión</button>
+</form>

@@ -54,25 +54,41 @@ router.get("/productsview/:pid", async (req, res) => {
   res.render("singleproductview", { product });
 });
 
-router.get("/profile", (req, res) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
-  }
+// router.get("/profile", (req, res) => {
+//   if (!req.session.user) {
+//     return res.redirect("/login");
+//   }
 
-  const { first_name, last_name, email, age, password, cart, role } =
-    req.session.user;
-  res.render("profile", {
-    first_name,
-    last_name,
-    email,
-    age,
-    cart,
-    role,
-  });
+//   const { first_name, last_name, email, age, password, cart, role } =
+//     req.session.user;
+//   res.render("profile", {
+//     first_name,
+//     last_name,
+//     email,
+//     age,
+//     cart,
+//     role,
+//   });
+// });
+
+router.get("/profile", (req, res) => {
+  if (req.session.user) {
+    res.render("profile", { user: req.session.user });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 router.get("/login", async (req, res) => {
-  res.render("login");
+  if (req.session.user) {
+    res.redirect("/profile");
+  } else {
+    res.render("login");
+  }
+});
+
+router.get("/register", (req, res) => {
+  res.render("register");
 });
 
 export default router;
