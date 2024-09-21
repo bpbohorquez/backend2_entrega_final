@@ -4,8 +4,9 @@ const router = Router();
 import mongoose from "mongoose";
 import session from "express-session";
 import userModel from "../models/user.model.js";
-import { createHash } from "../utils.js";
+import { authorization, createHash, passportCall } from "../utils.js";
 import passport from "passport";
+import jwt from "jsonwebtoken";
 
 router.get("/session", (req, res) => {
   if (req.session.counter) {
@@ -63,25 +64,44 @@ router.post(
   }
 );
 
-router.post(
-  "/sessions/login",
-  passport.authenticate("login", { failureRedirect: "" }),
-  async (req, res) => {
-    if (!req.user)
-      return res
-        .status(400)
-        .send({ status: "error", error: "Credenciales inválidas" });
+router.post("/sessions/login", (req, res) => {
+  const { email, password } = req.body;
+  if (email == "abc" && password == "abc") {
+    let token = jwt.sign({ email, password, role: "user" }, "secretKey", {
+      expiresIn: "24h",
+    });
+    res.send({ message: "Inicio de sesión exitoso", token });
+  }
+});
 
-    req.session.user = {
-      first_name: req.user.first_name,
-      last_name: req.user.last_name,
-      email: req.user.email,
-      age: req.user.age,
-      cart: req.user.cart,
-      role: req.user.role,
-    };
+// .post(
+//   "/sessions/login",
+//   passport.authenticate("login", { failureRedirect: "" }),
+//   async (req, res) => {
+//     if (!req.user)
+//       return res
+//         .status(400)
+//         .send({ status: "error", error: "Credenciales inválidas" });
 
-    res.send({ status: "success", payload: req.user });
+//     req.session.user = {
+//       first_name: req.user.first_name,
+//       last_name: req.user.last_name,
+//       email: req.user.email,
+//       age: req.user.age,
+//       cart: req.user.cart,
+//       role: req.user.role,
+//     };
+
+//     res.send({ status: "success", payload: req.user });
+//   }
+// );
+
+router.get(
+  "/sessions/current",
+  passportCall("jwt"),
+  authorization("user"),
+  (req, res) => {
+    res.send(req.user);
   }
 );
 
