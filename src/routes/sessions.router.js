@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import session from "express-session";
 import userModel from "../models/user.model.js";
 import { createHash } from "../utils.js";
+import passport from "passport";
 
 router.get("/session", (req, res) => {
   if (req.session.counter) {
@@ -28,40 +29,60 @@ router.get("/logout", (req, res) => {
   });
 });
 
-router.post("/sessions/register", async (req, res) => {
-  try {
-    const { first_name, last_name, email, age, password, cart, role } =
-      req.body;
+// **********************
+// router.post("/sessions/register", async (req, res) => {
+//   try {
+//     const { first_name, last_name, email, age, password, cart, role } =
+//       req.body;
 
-    const user = await userModel.create({
-      first_name,
-      last_name,
-      email,
-      age,
-      password: createHash(password),
-      cart,
-      role,
-    });
-    // await user.save();
+//     const user = await userModel.create({
+//       first_name,
+//       last_name,
+//       email,
+//       age,
+//       password: createHash(password),
+//       cart,
+//       role,
+//     });
 
-    // let result = await productModel.create({
-    //   title,
-    //   description,
-    //   code,
-    //   price,
-    //   status,
-    //   stock,
-    //   category,
-    //   thumbnails,
-    // });
+//     res.send({ status: "success", payload: user });
 
-    res.send({ status: "success", payload: user });
+//     // res.redirect("/login");
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send("Error de registro");
+//   }
+// });
+// *************************
 
-    // res.redirect("/login");
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Error de registro");
+router.post(
+  "/sessions/register",
+  passport.authenticate("register", { failureRedirect: "" }),
+  async (req, res) => {
+    res.send({ status: "success", message: "usuario registrado" });
   }
-});
+);
+
+router.post(
+  "/sessions/login",
+  passport.authenticate("login", { failureRedirect: "" }),
+  async (req, res) => {
+    if (!req.user)
+      return res
+        .status(400)
+        .send({ status: "error", error: "Credenciales inválidas" });
+
+    req.session.user = {
+      first_name: req.user.first_name,
+      last_name: req.user.last_name,
+      email: req.user.email,
+      age: req.user.age,
+      cart: req.user.cart,
+      role: req.user.role,
+    };
+
+    res.send({ status: "success", payload: req.user });
+  }
+);
 
 export default router;

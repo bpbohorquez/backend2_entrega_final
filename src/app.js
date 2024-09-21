@@ -14,6 +14,8 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 const app = express();
 const PORT = 8080;
@@ -60,6 +62,10 @@ const environment = async () => {
 environment();
 
 // Endpoints
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/", productsRouter);
 app.use("/", cartsRouter);
 app.use("/", viewsRouter);
