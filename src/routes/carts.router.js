@@ -4,6 +4,7 @@ const router = Router();
 import { readFileSync, writeFileSync } from "fs";
 import productModel from "../models/producto.model.js";
 import cartModel from "../models/carrito.model.js";
+import ticketModel from "../models/ticket.model.js";
 
 // POST Crear carrito:
 router.post("/carts", async (req, res) => {
@@ -117,6 +118,27 @@ router.delete("/carts/:cid/product/:pid", async (req, res) => {
 
     let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
     res.send({ status: "success", payload: result });
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+router.post("/carts/:cid/purchase", async (req, res) => {
+  let cartId = req.params.cid;
+
+  try {
+    let cart = await cartModel
+      .findOne({ _id: cartId })
+      .populate("products.product");
+
+    // let result = await ticketModel.create({
+    //   code: code,
+    //   purchase_datetime:,
+    //   amount:,
+    //   purchaser: req.user.email
+    // });
+
+    res.send({ status: "success", payload: cart });
   } catch (error) {
     console.error(error);
   }

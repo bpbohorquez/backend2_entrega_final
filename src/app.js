@@ -16,9 +16,10 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import config from "./config/config.js";
 
 const app = express();
-const PORT = 8080;
+const PORT = config.port;
 
 // Middlewares
 app.use(express.json());
@@ -27,8 +28,8 @@ app.use(cookieParser());
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://bohorquezbrian:coderhousecluster@coderhouse.to5l7.mongodb.net/base?retryWrites=true&w=majority&appName=Coderhouse",
+      // mongoUrl:"mongodb+srv://bohorquezbrian:coderhousecluster@coderhouse.to5l7.mongodb.net/base?retryWrites=true&w=majority&appName=Coderhouse",
+      mongoUrl: config.mongoURL,
       ttl: 1000,
     }),
     secret: "secretCoder",
