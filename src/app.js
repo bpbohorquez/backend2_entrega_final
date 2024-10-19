@@ -17,11 +17,13 @@ import MongoStore from "connect-mongo";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import config from "./config/config.js";
+import cors from "cors";
 
 const app = express();
 const PORT = config.port;
 
 // Middlewares
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
