@@ -1,5 +1,6 @@
 import cartModel from "../models/carrito.model.js";
 import mongoose from "mongoose";
+import ticketModel from "../models/ticket.model.js";
 
 export default class Cart {
   getCarts = async () => {
@@ -98,6 +99,23 @@ export default class Cart {
       let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
 
       return result;
+    } catch (error) {
+      console.log(error);
+
+      return null;
+    }
+  };
+
+  purchaseCart = async (code, purchase_datetime, amount, purchaser) => {
+    try {
+      let purchaseTicket = await ticketModel.create({
+        code,
+        purchase_datetime,
+        amount,
+        purchaser,
+      });
+
+      return purchaseTicket;
     } catch (error) {
       console.log(error);
 

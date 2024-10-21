@@ -12,6 +12,7 @@ import {
   updateCartProduct,
   deleteCart,
   deleteCartProduct,
+  purchaseCart,
 } from "../controllers/carts.controller.js";
 
 const router = Router();
@@ -124,25 +125,6 @@ router.delete("/carts/:id", deleteCart);
 router.delete("/carts/:cid/product/:pid", deleteCartProduct);
 
 // POST purchase cart
-router.post("/carts/:cid/purchase", async (req, res) => {
-  let cartId = req.params.cid;
-
-  try {
-    let cart = await cartModel
-      .findOne({ _id: cartId })
-      .populate("products.product");
-
-    // let result = await ticketModel.create({
-    //   code: code,
-    //   purchase_datetime:,
-    //   amount:,
-    //   purchaser: req.user.email
-    // });
-
-    res.send({ status: "success", payload: cart });
-  } catch (error) {
-    console.error(error);
-  }
-});
+router.post("/carts/:cid/purchase", purchaseCart);
 
 export default router;
