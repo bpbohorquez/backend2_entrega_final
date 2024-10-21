@@ -7,6 +7,7 @@ import userModel from "../dao/models/user.model.js";
 import { authorization, createHash, passportCall } from "../utils.js";
 import passport from "passport";
 import jwt from "jsonwebtoken";
+import UserDTO from "../dao/dto/user.dto.js";
 
 router.get("/session", (req, res) => {
   if (req.session.counter) {
@@ -47,31 +48,24 @@ router.post(
         .status(400)
         .send({ status: "error", error: "Credenciales inválidas" });
 
-    req.session.user = {
+    const { email, password } = req.body;
+
+    let userDTO = new UserDTO({
       first_name: req.user.first_name,
       last_name: req.user.last_name,
-      email: req.user.email,
+      email,
       age: req.user.age,
       cart: req.user.cart,
       role: req.user.role,
-    };
+    });
 
-    const { email, password } = req.body;
+    let { ...userSignDTO } = userDTO;
+    req.session.user = userSignDTO;
 
-    let token = jwt.sign(
-      {
-        first_name: req.user.first_name,
-        last_name: req.user.last_name,
-        email,
-        password,
-        cart: req.user.cart,
-        role: req.user.role,
-      },
-      "secretKey",
-      {
-        expiresIn: "24h",
-      }
-    );
+    let token = jwt.sign(userSignDTO, "secretKey", {
+      expiresIn: "24h",
+    });
+
     res.send({ message: "Inicio de sesión exitoso", token });
   }
 );
