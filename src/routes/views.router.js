@@ -2,10 +2,10 @@ import express from "express";
 import { Router } from "express";
 const router = Router();
 import { readFileSync, writeFileSync } from "fs";
-import productModel from "../models/producto.model.js";
+import productModel from "../dao/models/producto.model.js";
 import mongoose from "mongoose";
-import cartModel from "../models/carrito.model.js";
-import userModel from "../models/user.model.js";
+import cartModel from "../dao/models/carrito.model.js";
+import userModel from "../dao/models/user.model.js";
 
 router.get("/", async (req, res) => {
   res.render("home");

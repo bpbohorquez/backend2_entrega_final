@@ -3,7 +3,7 @@ import { Router } from "express";
 const router = Router();
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-import userModel from "../models/user.model.js";
+import userModel from "../dao/models/user.model.js";
 
 router.get("/setCookie", (req, res) => {
   res.cookie("coderCookie", "TEST COOKIE", { maxAge: 10000 }).send("Cookie");

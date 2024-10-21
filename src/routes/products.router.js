@@ -2,7 +2,7 @@ import express from "express";
 import { Router } from "express";
 const router = Router();
 import { readFileSync, writeFileSync } from "fs";
-import productModel from "../models/producto.model.js";
+import productModel from "../dao/models/producto.model.js";
 import mongoose from "mongoose";
 
 // Get todos los productos

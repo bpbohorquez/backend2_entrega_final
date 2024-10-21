@@ -3,7 +3,7 @@ import { Router } from "express";
 const router = Router();
 import mongoose from "mongoose";
 import session from "express-session";
-import userModel from "../models/user.model.js";
+import userModel from "../dao/models/user.model.js";
 import { authorization, createHash, passportCall } from "../utils.js";
 import passport from "passport";
 import jwt from "jsonwebtoken";
