@@ -53,4 +53,54 @@ export default class Cart {
       return null;
     }
   };
+
+  updateCartProduct = async (productId, cartId) => {
+    try {
+      let cartUpdate = await cartModel.findOne({ _id: cartId });
+
+      cartUpdate.products.push({ product: productId });
+
+      let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
+
+      return result;
+    } catch (error) {
+      console.log(error);
+
+      return null;
+    }
+  };
+
+  deleteCart = async (cartId) => {
+    try {
+      let cartUpdate = await cartModel.findOne({ _id: cartId });
+
+      cartUpdate.products = [];
+
+      let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
+
+      return result;
+    } catch (error) {
+      console.log(error);
+
+      return null;
+    }
+  };
+
+  deleteCartProduct = async (productId, cartId) => {
+    try {
+      let cartUpdate = await cartModel.findOne({ _id: cartId });
+
+      cartUpdate.products = cartUpdate.products.filter(
+        (p) => p.product != productId
+      );
+
+      let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
+
+      return result;
+    } catch (error) {
+      console.log(error);
+
+      return null;
+    }
+  };
 }

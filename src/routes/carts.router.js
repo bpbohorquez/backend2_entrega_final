@@ -9,6 +9,9 @@ import {
   getCarts,
   createCart,
   updateCart,
+  updateCartProduct,
+  deleteCart,
+  deleteCartProduct,
 } from "../controllers/carts.controller.js";
 
 const router = Router();
@@ -40,22 +43,24 @@ router.get("/carts/", getCarts);
 
 // PUT Actualizar productos a un carrito
 
-router.put("/carts/:cid/product/:pid", async (req, res) => {
-  let productId = req.params.pid;
-  let cartId = req.params.cid;
+// router.put("/carts/:cid/product/:pid", async (req, res) => {
+//   let productId = req.params.pid;
+//   let cartId = req.params.cid;
 
-  try {
-    let cartUpdate = await cartModel.findOne({ _id: cartId });
+//   try {
+//     let cartUpdate = await cartModel.findOne({ _id: cartId });
 
-    cartUpdate.products.push({ product: productId });
+//     cartUpdate.products.push({ product: productId });
 
-    let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
+//     let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
 
-    res.send({ status: "success", payload: result });
-  } catch (error) {
-    console.error(error);
-  }
-});
+//     res.send({ status: "success", payload: result });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
+
+router.put("/carts/:cid/product/:pid", updateCartProduct);
 
 // PUT actualizar carrito
 // router.put("/carts/:cid", async (req, res) => {
@@ -77,43 +82,48 @@ router.put("/carts/:cid/product/:pid", async (req, res) => {
 
 router.put("/carts/:cid", updateCart);
 
-// DELETE borrar productos del carrito:
-router.delete("/carts/:id", async (req, res) => {
-  let { cartId } = req.params;
+// DELETE carrito:
+// router.delete("/carts/:id", async (req, res) => {
+//   let { cartId } = req.params;
 
-  try {
-    let cartUpdate = await cartModel.findOne({ _id: cartId });
+//   try {
+//     let cartUpdate = await cartModel.findOne({ _id: cartId });
 
-    cartUpdate.products = [];
+//     cartUpdate.products = [];
 
-    let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
+//     let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
 
-    res.send({ status: "success", payload: result });
-  } catch (error) {
-    console.error(error);
-  }
-});
+//     res.send({ status: "success", payload: result });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
+
+router.delete("/carts/:id", deleteCart);
 
 // DELETE borrar producto de carrito
 
-router.delete("/carts/:cid/product/:pid", async (req, res) => {
-  let productId = req.params.pid;
-  let cartId = req.params.cid;
+// router.delete("/carts/:cid/product/:pid", async (req, res) => {
+//   let productId = req.params.pid;
+//   let cartId = req.params.cid;
 
-  try {
-    let cartUpdate = await cartModel.findOne({ _id: cartId });
+//   try {
+//     let cartUpdate = await cartModel.findOne({ _id: cartId });
 
-    cartUpdate.products = cartUpdate.products.filter(
-      (p) => p.product != productId
-    );
+//     cartUpdate.products = cartUpdate.products.filter(
+//       (p) => p.product != productId
+//     );
 
-    let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
-    res.send({ status: "success", payload: result });
-  } catch (error) {
-    console.error(error);
-  }
-});
+//     let result = await cartModel.updateOne({ _id: cartId }, cartUpdate);
+//     res.send({ status: "success", payload: result });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
 
+router.delete("/carts/:cid/product/:pid", deleteCartProduct);
+
+// POST purchase cart
 router.post("/carts/:cid/purchase", async (req, res) => {
   let cartId = req.params.cid;
 

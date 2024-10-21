@@ -30,3 +30,29 @@ export const updateCart = async (req, res) => {
 
   res.send({ status: "success", payload: result });
 };
+
+export const updateCartProduct = async (req, res) => {
+  let productId = req.params.pid;
+  let cartId = req.params.cid;
+
+  let result = await cartsService.updateCartProduct(productId, cartId);
+
+  res.send({ status: "success", payload: result });
+};
+
+export const deleteCart = async (req, res) => {
+  let cartId = req.params.id;
+
+  let result = await cartsService.deleteCart(cartId);
+
+  res.send({ status: "success", payload: result });
+};
+
+export const deleteCartProduct = async (req, res) => {
+  let productId = req.params.pid;
+  let cartId = req.params.cid;
+
+  let result = await cartsService.deleteCartProduct(productId, cartId);
+
+  res.send({ status: "success", payload: result });
+};
