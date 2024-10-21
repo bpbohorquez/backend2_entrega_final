@@ -1,4 +1,5 @@
 import cartModel from "../models/carrito.model.js";
+import mongoose from "mongoose";
 
 export default class Cart {
   getCarts = async () => {
