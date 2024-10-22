@@ -10,6 +10,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/products.controller.js";
+import { authorization } from "../utils.js";
 
 const router = Router();
 
@@ -124,7 +125,7 @@ router.get("/products/:id", getProductById);
 //   }
 // });
 
-router.post("/products", createProducts);
+router.post("/products", authorization("admin"), createProducts);
 
 // PUT actualizar información de producto
 
@@ -141,7 +142,7 @@ router.post("/products", createProducts);
 //   }
 // });
 
-router.put("/products/:id", updateProduct);
+router.put("/products/:id", authorization("admin"), updateProduct);
 
 // DELETE Eliminar producto
 
@@ -157,6 +158,6 @@ router.put("/products/:id", updateProduct);
 //   }
 // });
 
-router.delete("/products/:id", deleteProduct);
+router.delete("/products/:id", authorization("admin"), deleteProduct);
 
 export default router;

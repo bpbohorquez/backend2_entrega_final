@@ -76,7 +76,8 @@ export const purchaseCart = async (req, res) => {
 
   // Buscar carrito a comprar y email del cliente asociado al carrito
   let cart = await cartsService.getCartById(cartId);
-  let purchaser = cart.purchaser;
+
+  let purchaser = req.session.user.email;
 
   let leftProducts = [];
 

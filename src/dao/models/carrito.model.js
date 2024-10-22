@@ -13,7 +13,6 @@ const cartsSchema = mongoose.Schema({
     ],
     required: true,
   },
-  purchaser: { type: String, required: true },
 });
 
 cartsSchema.plugin(mongoosePaginate);

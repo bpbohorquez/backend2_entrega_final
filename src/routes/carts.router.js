@@ -14,6 +14,7 @@ import {
   deleteCartProduct,
   purchaseCart,
 } from "../controllers/carts.controller.js";
+import { authorization } from "../utils.js";
 
 const router = Router();
 
@@ -32,7 +33,7 @@ const router = Router();
 //   }
 // });
 
-router.post("/carts", createCart);
+router.post("/carts", authorization("user"), createCart);
 
 // GET Listar productos del carrito según id
 
@@ -61,7 +62,11 @@ router.get("/carts/", getCarts);
 //   }
 // });
 
-router.put("/carts/:cid/product/:pid", updateCartProduct);
+router.put(
+  "/carts/:cid/product/:pid",
+  authorization("user"),
+  updateCartProduct
+);
 
 // PUT actualizar carrito
 // router.put("/carts/:cid", async (req, res) => {
@@ -81,7 +86,7 @@ router.put("/carts/:cid/product/:pid", updateCartProduct);
 //   }
 // });
 
-router.put("/carts/:cid", updateCart);
+router.put("/carts/:cid", authorization("user"), updateCart);
 
 // DELETE carrito:
 // router.delete("/carts/:id", async (req, res) => {
@@ -100,7 +105,7 @@ router.put("/carts/:cid", updateCart);
 //   }
 // });
 
-router.delete("/carts/:id", deleteCart);
+router.delete("/carts/:id", authorization("user"), deleteCart);
 
 // DELETE borrar producto de carrito
 
@@ -122,9 +127,13 @@ router.delete("/carts/:id", deleteCart);
 //   }
 // });
 
-router.delete("/carts/:cid/product/:pid", deleteCartProduct);
+router.delete(
+  "/carts/:cid/product/:pid",
+  authorization("user"),
+  deleteCartProduct
+);
 
 // POST purchase cart
-router.post("/carts/:cid/purchase", purchaseCart);
+router.post("/carts/:cid/purchase", authorization("user"), purchaseCart);
 
 export default router;
